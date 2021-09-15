@@ -4,11 +4,15 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="6883cf5093fb45838fb4c587f53ec83a" Name="Diagram1">
-        <EntityTypeShape EntityType="EMSModel.Department" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMSModel.Employee" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMSModel.EmpUser" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+      <Diagram DiagramId="3f693513297e4071b333b582a9572b8a" Name="Diagram1">
+        <EntityTypeShape EntityType="EMSModel.Department" Width="1.5" PointX="2.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMSModel.Employee" Width="1.5" PointX="5" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMSModel.EmpUser" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMSModel.Role" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMSModel.UserRoleMapping" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
         <AssociationConnector Association="EMSModel.FK_DepartmentEmployee" ManuallyRouted="false" />
+        <AssociationConnector Association="EMSModel.FK__UserRoleM__UserI__35BCFE0A" ManuallyRouted="false" />
+        <AssociationConnector Association="EMSModel.FK__UserRoleM__RoleI__36B12243" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

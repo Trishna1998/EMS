@@ -10,18 +10,18 @@ using EMS.Models;
 
 namespace EMS.Controllers
 {
-    [Authorize]
+
     public class EmployeesController : Controller
     {
         private EMSEntities db = new EMSEntities();
-
+        [Authorize]
         // GET: Employees
         public ActionResult Index()
         {
             var employees = db.Employees.Include(e => e.Department);
             return View(employees.ToList());
         }
-
+        [Authorize(Roles = "Admin,Employee")]
         // GET: Employees/Details/5
         public ActionResult Details(int? id)
         {
@@ -36,7 +36,7 @@ namespace EMS.Controllers
             }
             return View(employee);
         }
-
+        [Authorize(Roles = "Admin,Employee")]
         // GET: Employees/Create
         public ActionResult Create()
         {
@@ -47,8 +47,10 @@ namespace EMS.Controllers
         // POST: Employees/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public ActionResult Create([Bind(Include = "EmpID,FirstName,LastName,DeptID,PhoneNo,Email,AddressLine,City,DOJ,DOB,Gender,Salary,Bonus")] Employee employee)
         {
             if (ModelState.IsValid)
@@ -63,6 +65,7 @@ namespace EMS.Controllers
         }
 
         // GET: Employees/Edit/5
+        [Authorize(Roles = "Admin,Employee")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -81,6 +84,7 @@ namespace EMS.Controllers
         // POST: Employees/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "EmpID,FirstName,LastName,DeptID,PhoneNo,Email,AddressLine,City,DOJ,DOB,Gender,Salary,Bonus")] Employee employee)
@@ -94,7 +98,7 @@ namespace EMS.Controllers
             ViewBag.DeptID = new SelectList(db.Departments, "DeptID", "DeptName", employee.DeptID);
             return View(employee);
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Employees/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -111,6 +115,7 @@ namespace EMS.Controllers
         }
 
         // POST: Employees/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

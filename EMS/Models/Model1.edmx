@@ -40,6 +40,45 @@
           <Property Name="EmailID" Type="nvarchar" MaxLength="45" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="45" Nullable="false" />
         </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="UserRoleMapping">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="RoleId" Type="int" />
+        </EntityType>
+        <Association Name="FK__UserRoleM__RoleI__36B12243">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="0..1" />
+          <End Role="UserRoleMapping" Type="Self.UserRoleMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserRoleMapping">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserRoleM__UserI__35BCFE0A">
+          <End Role="EmpUser" Type="Self.EmpUser" Multiplicity="0..1" />
+          <End Role="UserRoleMapping" Type="Self.UserRoleMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmpUser">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserRoleMapping">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DepartmentEmployee">
           <End Role="Departments" Type="Self.Departments" Multiplicity="1" />
           <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
@@ -56,6 +95,16 @@
           <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmpUser" EntityType="Self.EmpUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRoleMapping" EntityType="Self.UserRoleMapping" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__UserRoleM__RoleI__36B12243" Association="Self.FK__UserRoleM__RoleI__36B12243">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UserRoleMapping" EntitySet="UserRoleMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserRoleM__UserI__35BCFE0A" Association="Self.FK__UserRoleM__UserI__35BCFE0A">
+            <End Role="EmpUser" EntitySet="EmpUser" />
+            <End Role="UserRoleMapping" EntitySet="UserRoleMapping" />
+          </AssociationSet>
           <AssociationSet Name="FK_DepartmentEmployee" Association="Self.FK_DepartmentEmployee">
             <End Role="Departments" EntitySet="Departments" />
             <End Role="Employees" EntitySet="Employees" />
@@ -102,6 +151,25 @@
           <Property Name="Name" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="EmailID" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="UserRoleMappings" Relationship="Self.FK__UserRoleM__UserI__35BCFE0A" FromRole="EmpUser" ToRole="UserRoleMapping" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserRoleMappings" Relationship="Self.FK__UserRoleM__RoleI__36B12243" FromRole="Roles" ToRole="UserRoleMapping" />
+        </EntityType>
+        <EntityType Name="UserRoleMapping">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="RoleId" Type="Int32" />
+          <NavigationProperty Name="EmpUser" Relationship="Self.FK__UserRoleM__UserI__35BCFE0A" FromRole="UserRoleMapping" ToRole="EmpUser" />
+          <NavigationProperty Name="Role" Relationship="Self.FK__UserRoleM__RoleI__36B12243" FromRole="UserRoleMapping" ToRole="Roles" />
         </EntityType>
         <Association Name="FK_DepartmentEmployee">
           <End Role="Departments" Type="Self.Department" Multiplicity="1" />
@@ -115,13 +183,47 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__UserRoleM__UserI__35BCFE0A">
+          <End Role="EmpUser" Type="Self.EmpUser" Multiplicity="0..1" />
+          <End Role="UserRoleMapping" Type="Self.UserRoleMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmpUser">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserRoleMapping">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserRoleM__RoleI__36B12243">
+          <End Role="Roles" Type="Self.Role" Multiplicity="0..1" />
+          <End Role="UserRoleMapping" Type="Self.UserRoleMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserRoleMapping">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="EMSEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Departments" EntityType="Self.Department" />
           <EntitySet Name="Employees" EntityType="Self.Employee" />
           <EntitySet Name="EmpUsers" EntityType="Self.EmpUser" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="UserRoleMappings" EntityType="Self.UserRoleMapping" />
           <AssociationSet Name="FK_DepartmentEmployee" Association="Self.FK_DepartmentEmployee">
             <End Role="Departments" EntitySet="Departments" />
             <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserRoleM__UserI__35BCFE0A" Association="Self.FK__UserRoleM__UserI__35BCFE0A">
+            <End Role="EmpUser" EntitySet="EmpUsers" />
+            <End Role="UserRoleMapping" EntitySet="UserRoleMappings" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserRoleM__RoleI__36B12243" Association="Self.FK__UserRoleM__RoleI__36B12243">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UserRoleMapping" EntitySet="UserRoleMappings" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -165,6 +267,23 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="EmailID" ColumnName="EmailID" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="EMSModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoleMappings">
+            <EntityTypeMapping TypeName="EMSModel.UserRoleMapping">
+              <MappingFragment StoreEntitySet="UserRoleMapping">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

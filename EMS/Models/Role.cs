@@ -12,18 +12,16 @@ namespace EMS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class EmpUser
+    public partial class Role
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public EmpUser()
+        public Role()
         {
             this.UserRoleMappings = new HashSet<UserRoleMapping>();
         }
     
-        public int UserID { get; set; }
-        public string Name { get; set; }
-        public string EmailID { get; set; }
-        public string Password { get; set; }
+        public int Id { get; set; }
+        public string RoleName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserRoleMapping> UserRoleMappings { get; set; }
